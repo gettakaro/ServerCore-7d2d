@@ -6,6 +6,8 @@ name: Game update
 # Build runs (pushes made with GITHUB_TOKEN don't trigger workflows).
 
 on:
+  push:
+    branches: [test/game-update]
   schedule:
     - cron: "17 6 * * *"
   workflow_dispatch:
@@ -24,7 +26,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        branch: ${{ inputs.branch && fromJSON(format('["{0}"]', inputs.branch)) || fromJSON('["main","experimental"]') }}
+        branch: ["test/game-update"]
     concurrency:
       group: game-update-${{ matrix.branch }}
     env:
