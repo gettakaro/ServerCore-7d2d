@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
@@ -32,14 +32,13 @@
     <None Include="$(WebUi)/**" Link="ClaimCreator/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
-  <Target Name="RequireFetchedInputs" BeforeTargets="BeforeBuild">
+  <!-- <Target Name="RequireFetchedInputs" BeforeTargets="BeforeBuild">
     <Error Condition="!Exists('$(GameReferences)/Assembly-CSharp.dll')" Text="Game references are missing: run scripts/fetch-game-refs.sh" />
     <Error Condition="!Exists('$(WebUi)/index.html')" Text="The Web UI is missing: run scripts/fetch-web-ui.sh" />
-  </Target>
+  </Target> -->
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all" />
-    <PackageReference Include="LiteDB" Version="4.1.4" />
   </ItemGroup>
 
   <!-- Explicit list: globbing the game folder would pull in its own mscorlib and System, which clash with the reference assemblies. -->
@@ -54,7 +53,101 @@
     <GameReference Include="UnityEngine" />
     <GameReference Include="UnityEngine.CoreModule" />
     <GameReference Include="UnityEngine.ImageConversionModule" />
-    <Reference Include="@(GameReference)" HintPath="$(GameReferences)/%(Identity).dll" Private="false" />
+    <Reference Include="0Harmony">
+      <HintPath>..\..\Sources\7dtd-binaries\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\Sources\7dtd-binaries\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>..\..\Sources\7dtd-binaries\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="com.rlabrecque.steamworks.net">
+      <HintPath>..\..\Sources\7dtd-binaries\com.rlabrecque.steamworks.net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="EOS">
+      <HintPath>..\..\Sources\7dtd-binaries\EOS.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="LiteDB">
+      <HintPath>..\..\Sources\7dtd-binaries\LiteDB.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LiteNetLib">
+      <HintPath>..\..\Sources\7dtd-binaries\LiteNetLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="LogLibrary">
+      <HintPath>..\..\Sources\7dtd-binaries\LogLibrary.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\Sources\7dtd-binaries\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\Sources\7dtd-binaries\UnityEngine.CoreModule.dll</HintPath>
+      <EmbedInteropTypes></EmbedInteropTypes>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>..\..\Sources\7dtd-binaries\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Update="mscorlib">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Update="System">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Update="System.Core">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Update="System.Data">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Update="System.Drawing">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Update="System.IO.Compression.FileSystem">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Update="System.Numerics">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Update="System.Runtime.Serialization">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Update="System.Xml">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Update="System.Xml.Linq">
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
 
 </Project>
