@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace ServerCore.CustomCommands
@@ -36,7 +36,7 @@ namespace ServerCore.CustomCommands
                     SdtdConsole.Instance.Output($"Players owning VIP mod(s) in memory:");
                     SdtdConsole.Instance.Output($"entityId        VIPMod");
                     
-                    foreach(KeyValuePair<int,string> kvp in API.lstVipModUsers)
+                    foreach(KeyValuePair<int,string> kvp in RegionReset.lstVipModUsers)
                     {
                         SdtdConsole.Instance.Output($"{kvp.Key}     {kvp.Value}");
                     }
@@ -48,9 +48,9 @@ namespace ServerCore.CustomCommands
                     if(_params[0].EqualsCaseInsensitive("remove"))
                     {
                         int eId = int.Parse(_params[1]);
-                        if (API.lstVipModUsers.ContainsKey(eId))
+                        if (RegionReset.lstVipModUsers.ContainsKey(eId))
                         {
-                            API.lstVipModUsers.Remove(eId);
+                            RegionReset.lstVipModUsers.Remove(eId);
                             ClientInfo ciID = ConsoleHelper.ParseParamIdOrName(_params[1]);
                             if (ciID != null)
                             {
@@ -81,7 +81,7 @@ namespace ServerCore.CustomCommands
                     return;
                 }
 
-                if (API.lstVipModUsers.ContainsKey(ci.entityId))
+                if (RegionReset.lstVipModUsers.ContainsKey(ci.entityId))
                 {
                     if(!RegionReset.lstVIPModGuardCommandFired.Contains(ci.PlatformId.ToString()))
                     {
@@ -100,7 +100,7 @@ namespace ServerCore.CustomCommands
                                     cmd = cmd.Replace("${platformId}", ci.PlatformId.ToString());
                                     cmd = cmd.Replace("${entityId}", ci.entityId.ToString());
                                     cmd = cmd.Replace("${playerName}", ci.playerName);
-                                    cmd = cmd.Replace("${vipMod}", API.lstVipModUsers[ci.entityId]);
+                                    cmd = cmd.Replace("${vipMod}", RegionReset.lstVipModUsers[ci.entityId]);
 
                                     SdtdConsole.Instance.ExecuteAsync(cmd, iConsole);
                                 }
@@ -112,7 +112,7 @@ namespace ServerCore.CustomCommands
                                 command = command.Replace("${platformId}", ci.PlatformId.ToString());
                                 command = command.Replace("${entityId}", ci.entityId.ToString());
                                 command = command.Replace("${playerName}", ci.playerName);
-                                command = command.Replace("${vipMod}", API.lstVipModUsers[ci.entityId]);
+                                command = command.Replace("${vipMod}", RegionReset.lstVipModUsers[ci.entityId]);
 
                                 CmdClaimCommandResult iConsole = new CmdClaimCommandResult();
                                 SdtdConsole.Instance.ExecuteAsync(command, iConsole);
