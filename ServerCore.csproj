@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
@@ -36,6 +36,10 @@
     <Error Condition="!Exists('$(GameReferences)/Assembly-CSharp.dll')" Text="Game references are missing: run scripts/fetch-game-refs.sh" />
     <Error Condition="!Exists('$(WebUi)/index.html')" Text="The Web UI is missing: run scripts/fetch-web-ui.sh" />
   </Target>
+
+  <ItemGroup>
+    <Content Include="src\Config\buffs.xml" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all" />
