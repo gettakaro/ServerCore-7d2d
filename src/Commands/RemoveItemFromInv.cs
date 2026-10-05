@@ -170,8 +170,7 @@ namespace ServerCore.CustomCommands
             // ---- LIVE REMOVAL ----
             int removedLive = 0;
 
-            global::Inventory toolbelt = (player.saveInventory != null) ? player.saveInventory : player.inventory;
-            removedLive += RemoveFromInventory(toolbelt, player, targetIv, toRemove - removedLive);
+            removedLive += RemoveFromInventory(player.inventory, player, targetIv, toRemove - removedLive);
 
             if (removedLive < toRemove)
                 removedLive += RemoveFromBag(player.bag, toRemove - removedLive, targetIv);
@@ -241,7 +240,7 @@ namespace ServerCore.CustomCommands
 
                 if (iv.type == targetIv.type && (!quality.HasValue || iv.Quality == quality.Value))
                 {
-                    eq.SetSlotItemRaw(i, ItemValue.None.Clone());
+                    eq.ItemGrid.SetItem(i, ItemStack.Empty);
                     removed += 1;
                 }
             }
@@ -258,14 +257,29 @@ namespace ServerCore.CustomCommands
 
             int removed = 0;
 
-            if (pdf.inventory != null && removed < maxToRemove)
-                removed += FilterStacks(pdf.inventory, targetIv, maxToRemove - removed, quality);
+            if (removed < maxToRemove)
+            {
+                global::Inventory belt = PlayerDataBlobs.ReadInventory(pdf);
+                int fromBelt = FilterStacks(belt.ItemGrid, targetIv, maxToRemove - removed, quality);
+                if (fromBelt > 0) PlayerDataBlobs.WriteInventory(pdf, belt);
+                removed += fromBelt;
+            }
 
-            if (pdf.bag != null && removed < maxToRemove)
-                removed += FilterStacks(pdf.bag.items, targetIv, maxToRemove - removed, quality);
+            if (removed < maxToRemove)
+            {
+                global::Bag bag = PlayerDataBlobs.ReadBag(pdf);
+                int fromBag = FilterStacks(bag.ItemGrid, targetIv, maxToRemove - removed, quality);
+                if (fromBag > 0) PlayerDataBlobs.WriteBag(pdf, bag);
+                removed += fromBag;
+            }
 
-            if (pdf.equipment != null && removed < maxToRemove)
-                removed += FilterEquip(pdf.equipment, targetIv, maxToRemove - removed, quality);
+            if (removed < maxToRemove)
+            {
+                Equipment equipment = PlayerDataBlobs.ReadEquipment(pdf);
+                int fromEquipment = FilterEquip(equipment, targetIv, maxToRemove - removed, quality);
+                if (fromEquipment > 0) PlayerDataBlobs.WriteEquipment(pdf, equipment);
+                removed += fromEquipment;
+            }
 
             if (pdf.dragAndDropItem != null && removed < maxToRemove)
             {
@@ -291,7 +305,7 @@ namespace ServerCore.CustomCommands
             return removed;
         }
 
-        private static int FilterStacks(ItemStack[] slots, ItemValue targetIv, int remaining, ushort? quality)
+        private static int FilterStacks(ItemStackGrid slots, ItemValue targetIv, int remaining, ushort? quality)
         {
             int removed = 0;
             for (int i = 0; i < slots.Length && removed < remaining; i++)
@@ -304,7 +318,6 @@ namespace ServerCore.CustomCommands
                 int take = Math.Min(st.count, remaining - removed);
                 st.count -= take;
                 if (st.count <= 0) st.Clear();
-                slots[i] = st;
                 removed += take;
             }
             return removed;
@@ -320,7 +333,7 @@ namespace ServerCore.CustomCommands
                 if (iv == null || iv.type != targetIv.type) continue;
                 if (quality.HasValue && iv.Quality != quality.Value) continue;
 
-                eq.SetSlotItemRaw(i, ItemValue.None.Clone());
+                eq.ItemGrid.SetItem(i, ItemStack.Empty);
                 removed++;
             }
             return removed;

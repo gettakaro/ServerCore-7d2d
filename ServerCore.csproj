@@ -28,6 +28,7 @@
   <ItemGroup>
     <Compile Include="src/**/*.cs" />
     <None Include="ModInfo.xml" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="src/Config/buffs.xml" Link="Config/buffs.xml" CopyToOutputDirectory="PreserveNewest" />
     <None Include="mod-assets/*.cer" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="$(WebUi)/**" Link="ClaimCreator/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>

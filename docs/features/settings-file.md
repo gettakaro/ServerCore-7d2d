@@ -277,6 +277,18 @@ The minimum amount of minutes the server has to be up before shutdownba will reb
 
 If true, all vehicles that are NOT stored (backpack, container etc) will be removed at every server restart.
 
+`<VIPModGuard_Enabled>false</VIPModGuard_Enabled>`
+
+If true, ServerCore flags players who have an item mod listed in `VIPModGuardItems.txt` installed in their gear. See [VIP ModGuard](/ServerCore-7d2d/features/vip-modguard/).
+
+`<VIPModGuard_ExcludeAdminLvl>0</VIPModGuard_ExcludeAdminLvl>`
+
+Players with an admin permission level at or below this number are never flagged by VIP ModGuard.
+
+`<VIPModGuard_DetectedCommand>none</VIPModGuard_DetectedCommand>`
+
+The console command, or several separated by `;`, that `evmg` runs for a flagged player. See [VIP ModGuard](/ServerCore-7d2d/features/vip-modguard/) for the placeholders.
+
 `<Drones_RemoveOnRestart>false</Drones_RemoveOnRestart>`
 
 If true, all drones that are NOT stored (backpack, container etc) will be removed at every server restart.

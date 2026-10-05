@@ -82,7 +82,7 @@ jobs:
       - name: Check the mod folder contents
         if: steps.source.outputs.has-source == 'true'
         run: |
-          expected=$'ClaimCreator\nLiteDB.dll\nModInfo.xml\nServerCore.dll\nsteam-intermediate.cer\nsteam-rootca.cer'
+          expected=$'ClaimCreator\nConfig\nLiteDB.dll\nModInfo.xml\nServerCore.dll\nsteam-intermediate.cer\nsteam-rootca.cer'
           actual=$(ls -A Mods/ServerCore | sort)
           if [[ "${actual}" != "${expected}" ]]; then
             echo "::error::Unexpected files in Mods/ServerCore:"
@@ -91,6 +91,10 @@ jobs:
           fi
           if [[ ! -f Mods/ServerCore/ClaimCreator/index.html ]]; then
             echo "::error::Mods/ServerCore/ClaimCreator has no index.html"
+            exit 1
+          fi
+          if [[ ! -f Mods/ServerCore/Config/buffs.xml ]]; then
+            echo "::error::Mods/ServerCore/Config has no buffs.xml"
             exit 1
           fi
 

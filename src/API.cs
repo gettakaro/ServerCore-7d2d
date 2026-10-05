@@ -42,6 +42,11 @@ namespace ServerCore
             {
                 RegionReset.HandleBannedItems(_data);
             }
+
+            if (ServerCoreSettings.Instance.VIPModGuard_Enabled)
+            {
+                RegionReset.HandleVIPGuardItems(_data);
+            }
         }
 
         private ModEvents.EModEventResult ChatMessage(ref ModEvents.SChatMessageData _data)
@@ -130,6 +135,11 @@ namespace ServerCore
                 using (File.Create(RegionReset.AllPoiExceptionFile)) { }
                 Log.Out("[PrismaCore] Created new empty AllPoi_Exceptions.txt in " + RegionReset.RegionPath);
             }
+            if (!File.Exists(RegionReset.VIPModGuardItemsFile))
+            {
+                using (File.Create(RegionReset.VIPModGuardItemsFile)) { }
+                Log.Out("[PrismaCore] Created new empty VIPModGuardItems.txt in " + RegionReset.RegionPath);
+            }
 
             ServerCoreStrings.Load();
             ServerCoreSettings.Load();
@@ -141,6 +151,7 @@ namespace ServerCore
             PermaDeathClass.Loadxml();
             ReservedSlots.LoadXml();
             RegionReset.LoadRegions();
+            RegionReset.LoadVIPGuardItems();
             RegionReset.LoadBannedItems();
             RegionWatcher.LoadWatchers();
             
