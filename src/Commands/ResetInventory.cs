@@ -67,25 +67,21 @@ namespace ServerCore.CustomCommands
 
                         if (_params.ContainsCaseInsensitive("bag") || _params.ContainsCaseInsensitive("all"))
                         {
-                            ItemStack[] bagSlots = playerDataFile.bag.items;
-                            for (int k = 0; k < bagSlots.Length; k++)
-                            {
-                                bagSlots[k] = ItemStack.Empty.Clone();
-                            }
-                            playerDataFile.bag.items = bagSlots;
+                            global::Bag bag = PlayerDataBlobs.ReadBag(playerDataFile);
+                            bag.Clear();
+                            PlayerDataBlobs.WriteBag(playerDataFile, bag);
                         }
 
                         if (_params.ContainsCaseInsensitive("belt") || _params.ContainsCaseInsensitive("all"))
                         {
-                            for (int l = 0; l < playerDataFile.inventory.Length; l++)
-                            {
-                                playerDataFile.inventory.SetValue(ItemStack.Empty.Clone(), l);
-                            }
+                            global::Inventory belt = PlayerDataBlobs.ReadInventory(playerDataFile);
+                            belt.ItemGrid.ClearItems();
+                            PlayerDataBlobs.WriteInventory(playerDataFile, belt);
                         }
 
                         if (_params.ContainsCaseInsensitive("equipment") || _params.ContainsCaseInsensitive("all"))
                         {
-                            playerDataFile.equipment = new Equipment();
+                            PlayerDataBlobs.WriteEquipment(playerDataFile, new Equipment());
                         }
 
                         if (File.Exists($"{GameIO.GetPlayerDataDir()}/{dbplayer.EOS_Id}.ttp.bak"))
@@ -146,25 +142,21 @@ namespace ServerCore.CustomCommands
 
                 if (_params.ContainsCaseInsensitive("bag") || _params.ContainsCaseInsensitive("all"))
                 {
-                    ItemStack[] bagSlots = playerDataFile.bag.items;
-                    for (int k = 0; k < bagSlots.Length; k++)
-                    {
-                        bagSlots[k] = ItemStack.Empty.Clone();
-                    }
-                    playerDataFile.bag.items = bagSlots;
+                    global::Bag bag = PlayerDataBlobs.ReadBag(playerDataFile);
+                    bag.Clear();
+                    PlayerDataBlobs.WriteBag(playerDataFile, bag);
                 }
 
                 if (_params.ContainsCaseInsensitive("belt") || _params.ContainsCaseInsensitive("all"))
                 {
-                    for (int l = 0; l < playerDataFile.inventory.Length; l++)
-                    {
-                        playerDataFile.inventory.SetValue(ItemStack.Empty.Clone(), l);
-                    }
+                    global::Inventory belt = PlayerDataBlobs.ReadInventory(playerDataFile);
+                    belt.ItemGrid.ClearItems();
+                    PlayerDataBlobs.WriteInventory(playerDataFile, belt);
                 }
 
                 if (_params.ContainsCaseInsensitive("equipment") || _params.ContainsCaseInsensitive("all"))
                 {
-                    playerDataFile.equipment = new Equipment();
+                    PlayerDataBlobs.WriteEquipment(playerDataFile, new Equipment());
                 }
 
                 if (File.Exists($"{GameIO.GetPlayerDataDir()}/{steamID}.ttp.bak"))

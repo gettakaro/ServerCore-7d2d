@@ -37,6 +37,7 @@ export default defineConfig({
 						{ slug: 'features/reset-regions' },
 						{ slug: 'features/pvpve-configuration' },
 						{ slug: 'features/location-based-buffs' },
+						{ slug: 'features/vip-modguard' },
 						{ slug: 'features/settings-file' },
 					],
 				},

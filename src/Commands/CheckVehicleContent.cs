@@ -52,7 +52,7 @@ namespace ServerCore.CustomCommands
                                 SdtdConsole.Instance.Output("Jetpack owner: " + playerDataFromEntityID.PlayerName.DisplayName);
                             }
 
-                            ItemStack[] bikestack = entityBlimp.bag.GetSlots();
+                            ItemStack[] bikestack = entityBlimp.bag.ItemGrid.CloneItems();
 
                             SdtdConsole.Instance.Output("Items in storage:");
                             if (entityBlimp.bag.IsEmpty())
@@ -95,7 +95,7 @@ namespace ServerCore.CustomCommands
                                 SdtdConsole.Instance.Output("Helicopter owner: " + playerDataFromEntityID.PlayerName.DisplayName);
                             }
 
-                            ItemStack[] bikestack = entityHelicopter.bag.GetSlots();
+                            ItemStack[] bikestack = entityHelicopter.bag.ItemGrid.CloneItems();
 
                             SdtdConsole.Instance.Output("Items in storage:");
                             if (entityHelicopter.bag.IsEmpty())
@@ -138,7 +138,7 @@ namespace ServerCore.CustomCommands
                                 SdtdConsole.Instance.Output("Jeep owner: " + playerDataFromEntityID.PlayerName.DisplayName);
                             }
 
-                            ItemStack[] bikestack = entityJeep.bag.GetSlots();
+                            ItemStack[] bikestack = entityJeep.bag.ItemGrid.CloneItems();
 
                             SdtdConsole.Instance.Output("Items in storage:");
                             if (entityJeep.bag.IsEmpty())
@@ -181,7 +181,7 @@ namespace ServerCore.CustomCommands
                                 SdtdConsole.Instance.Output("Motorcycle owner: " + playerDataFromEntityID.PlayerName.DisplayName);
                             }
 
-                            ItemStack[] bikestack = entityMotorcycle.bag.GetSlots();
+                            ItemStack[] bikestack = entityMotorcycle.bag.ItemGrid.CloneItems();
 
                             SdtdConsole.Instance.Output("Items in storage:");
                             if (entityMotorcycle.bag.IsEmpty())
@@ -225,7 +225,7 @@ namespace ServerCore.CustomCommands
                                 SdtdConsole.Instance.Output("Gyrocopter owner: " + playerDataFromEntityID.PlayerName.DisplayName);
                             }
 
-                            ItemStack[] bikestack = entityGyrocopter.bag.GetSlots();
+                            ItemStack[] bikestack = entityGyrocopter.bag.ItemGrid.CloneItems();
 
                             SdtdConsole.Instance.Output("Items in storage:");
                             if (entityGyrocopter.bag.IsEmpty())
@@ -268,7 +268,7 @@ namespace ServerCore.CustomCommands
                                 SdtdConsole.Instance.Output("Bicycle owner: " + playerDataFromEntityID.PlayerName.DisplayName);
                             }
 
-                            ItemStack[] bikestack = entityBicycle.bag.GetSlots();
+                            ItemStack[] bikestack = entityBicycle.bag.ItemGrid.CloneItems();
 
                             SdtdConsole.Instance.Output("Items in storage:");
                             if (entityBicycle.bag.IsEmpty())
@@ -312,7 +312,7 @@ namespace ServerCore.CustomCommands
                                 SdtdConsole.Instance.Output("Minibike owner: " + playerDataFromEntityID.PlayerName.DisplayName);
                             }
 
-                            ItemStack[] bikestack = entityMinibike.bag.GetSlots();
+                            ItemStack[] bikestack = entityMinibike.bag.ItemGrid.CloneItems();
 
                             SdtdConsole.Instance.Output("Items in storage:");
                             if (entityMinibike.bag.IsEmpty())

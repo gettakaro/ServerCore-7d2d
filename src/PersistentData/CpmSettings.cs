@@ -148,6 +148,12 @@ namespace ServerCore
 
         //Vehicle removal on boot
         public bool Vehicles_RemoveOnRestart = false;
+
+        //VIPModGuard
+        public bool VIPModGuard_Enabled = false;
+        public int VIPModGuard_ExcludeAdminLvl = 0;
+        public string VIPModGuard_DetectedCommand = "none";
+
         public bool Drones_RemoveOnRestart = false;
 
         //timestamped logfile
