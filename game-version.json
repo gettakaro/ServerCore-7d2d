@@ -1,9 +1,9 @@
 {
-  "version": "3.3.0 EXP b14",
+  "version": "unknown (build 26167630)",
   "app": 294420,
   "depot": 294422,
   "branch": "latest_experimental",
-  "buildid": 25518420,
-  "manifest": "8716509388707296639",
-  "assemblyCSharpSha256": "85945a525243b5e45f8069dc13fce1c11b7d8cde79f84e22728c838fe9bad38c"
+  "buildid": 26167630,
+  "manifest": "691152299146393406",
+  "assemblyCSharpSha256": "ad146019f4f488ba6c395df0a33bcdf0fdabcec91a0b15fd65475e3047f8a5db"
 }
