@@ -1,6 +1,6 @@
 {
   "repository": "CatalysmsServerManager/CPM-claim-creator",
-  "tag": "v2.2.0",
+  "tag": "v2.2.1",
   "asset": "cpmcc.zip",
-  "sha256": "0afb0b6e977d3c8e4f52a0f00097c65ee29343de6ab44bf6d4df3808a1e1609d"
+  "sha256": "ca29d73dc500d6f446bcec714bfec719e31074ca67fb1d52c4042f5b2cb5459d"
 }
