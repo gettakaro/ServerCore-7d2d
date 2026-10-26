@@ -4,6 +4,8 @@ All notable changes to ServerCore are documented here. The format is based on [K
 
 ## [Unreleased]
 
+## [3.2.0-exp.1] - 2026-10-26
+
 This build is for game version 3.4.0 EXP b6.
 
 ## [3.1.0] - 2026-10-05
@@ -43,6 +45,7 @@ This build is for game version 3.3.0 EXP b14.
 The last release of PrismaCore by Prisma501, for game version 3.2.0 b10. This is the baseline ServerCore continues from.
 
 [Unreleased]: https://github.com/gettakaro/ServerCore-7d2d/commits/experimental
+[3.2.0-exp.1]: https://github.com/gettakaro/ServerCore-7d2d/releases/tag/v3.2.0-exp.1
 [3.1.0]: https://github.com/gettakaro/ServerCore-7d2d/releases/tag/v3.1.0
 [3.1.0-exp.1]: https://github.com/gettakaro/ServerCore-7d2d/releases/tag/v3.1.0-exp.1
 [2.5]: https://gettakaro.github.io/ServerCore-7d2d/project/changelog/#prismacore-version-history
