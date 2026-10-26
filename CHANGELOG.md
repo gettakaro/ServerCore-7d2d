@@ -4,6 +4,8 @@ All notable changes to ServerCore are documented here. The format is based on [K
 
 ## [Unreleased]
 
+This release is for game version 3.4.0 b6. It works like 3.1.0. Game version 3.3 is no longer supported; stay on ServerCore 3.1.0 for it.
+
 ## [3.1.0] - 2026-10-05
 
 The first ServerCore release: PrismaCore 2.5 as open source, for game version 3.3.0 b18. Game version 3.2 is no longer supported; stay on PrismaCore 2.5 for it.
