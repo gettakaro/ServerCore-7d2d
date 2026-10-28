@@ -4,6 +4,10 @@ All notable changes to ServerCore are documented here. The format is based on [K
 
 ## [Unreleased]
 
+## [3.3.0] - 2026-10-28
+
+This release is for game version 3.4.0 b6, like 3.2.0.
+
 ### Changed
 
 - `bexport`, `brender` and `bdup` skip storage blocks such as crates, safes and the land claim block's storage, so a base can't be copied together with its loot. Add `withstorage` to keep storage blocks and their contents. Requested by PRG.
@@ -47,6 +51,7 @@ The first ServerCore release: PrismaCore 2.5 as open source, for game version 3.
 The last release of PrismaCore by Prisma501, for game version 3.2.0 b10. This is the baseline ServerCore continues from.
 
 [Unreleased]: https://github.com/gettakaro/ServerCore-7d2d/commits/main
+[3.3.0]: https://github.com/gettakaro/ServerCore-7d2d/releases/tag/v3.3.0
 [3.2.0]: https://github.com/gettakaro/ServerCore-7d2d/releases/tag/v3.2.0
 [3.1.0]: https://github.com/gettakaro/ServerCore-7d2d/releases/tag/v3.1.0
 [2.5]: https://gettakaro.github.io/ServerCore-7d2d/project/changelog/#prismacore-version-history
