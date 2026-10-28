@@ -398,6 +398,44 @@ namespace ServerCore
                         harmonyPatcher.Patch(gameMethod, new HarmonyMethod(prf), null, null);
                     }
                 }
+
+                gameMethod = AccessTools.Method(typeof(TileEntity), "setModified");
+                if (gameMethod == null)
+                {
+                    Log.Out("[PrismaCore] GameMethod setModified not found. Abort patching.");
+                }
+                else
+                {
+                    var prf = typeof(StateManager).GetMethod("TESMB");
+
+                    if (prf == null)
+                    {
+                        Log.Out("[PrismaCore] PatchMethod TESMB not found. Abort patching.");
+                    }
+                    else
+                    {
+                        harmonyPatcher.Patch(gameMethod, new HarmonyMethod(prf), null, null);
+                    }
+                }
+
+                gameMethod = AccessTools.Method(typeof(BlockCompositeTileEntity), "IsTileEntitySavedInPrefab");
+                if (gameMethod == null)
+                {
+                    Log.Out("[PrismaCore] GameMethod IsTileEntitySavedInPrefab not found. Abort patching.");
+                }
+                else
+                {
+                    var prf = typeof(StateManager).GetMethod("TESIPB");
+
+                    if (prf == null)
+                    {
+                        Log.Out("[PrismaCore] PatchMethod TESIPB not found. Abort patching.");
+                    }
+                    else
+                    {
+                        harmonyPatcher.Patch(gameMethod, new HarmonyMethod(prf), null, null);
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -1288,6 +1326,22 @@ namespace ServerCore
             catch { }
 
             return true;
+        }
+
+        // Prefab.copyFromWorld clones tile entities without a chunk; vanilla setModified dereferences it and throws
+        public static bool TESMB(TileEntity __instance)
+        {
+            return __instance.GetChunk() != null;
+        }
+
+        public static bool TESIPB(BlockCompositeTileEntity __instance, ref bool __result)
+        {
+            if (!PrefabStorage.IncludeStorage || !PrefabStorage.IsStorage(__instance))
+            {
+                return true;
+            }
+            __result = true;
+            return false;
         }
 
         public static bool TPB(List<string> _params, CommandSenderInfo _senderInfo)

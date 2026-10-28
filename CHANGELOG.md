@@ -4,6 +4,18 @@ All notable changes to ServerCore are documented here. The format is based on [K
 
 ## [Unreleased]
 
+### Changed
+
+- `bexport`, `brender` and `bdup` skip storage blocks such as crates, safes and the land claim block's storage, so a base can't be copied together with its loot. Add `withstorage` to keep storage blocks and their contents. Requested by PRG.
+- `brender ... addtorwg` refuses a prefab that contains storage blocks unless you add `withstorage`, because the world renders the prefab file again, storage included, when the region resets.
+
+### Fixed
+
+- `bexport` exports areas with storage blocks again. Since game version 3.3 it saved nothing when the area held a writable crate.
+- `brender`, `bdup`, `fblock` and the block replace command no longer fail near writable crates.
+- `bexport` prints an error in the console when an export fails, not only in the server log.
+- `bundo` restores containers with their contents. Since game version 3.3 it brought back safes, gun safes and other storage blocks empty.
+
 ## [3.2.0] - 2026-10-26
 
 This release is for game version 3.4.0 b6. It works like 3.1.0. Game version 3.3 is no longer supported; stay on ServerCore 3.1.0 for it.
