@@ -28,7 +28,8 @@ namespace ServerCore.CustomCommands
                 "3. Store on position 2 your current location\n" +
                 "4. use stored position 1 and 2 to duplicate on x,y,z\n" +
                 "5. use stored position 1 and 2 to duplicate on your current location\n" +
-                "<rot> prefab rotation -> need to be equal 0,1,2 or 3\n";
+                "<rot> prefab rotation -> need to be equal 0,1,2 or 3\n" +
+                "Storage blocks (crates, safes, ...) are not duplicated, unless you add \"withstorage\" to methods 1, 4 or 5 to duplicate them with their contents.\n";
         }
 
         public override string[] getCommands()
@@ -40,6 +41,8 @@ namespace ServerCore.CustomCommands
         {
             try
             {
+                bool withStorage = PrefabStorage.TakeWithStorageParam(_params);
+                PrefabStorage.IncludeStorage = withStorage;
                 int x1 = int.MinValue;
                 int y1 = int.MinValue;
                 int z1 = int.MinValue;
@@ -278,6 +281,11 @@ namespace ServerCore.CustomCommands
                 Prefab pref = new Prefab();
                 pref.copyFromWorld(GameManager.Instance.World, new Vector3i(x1, y1, z1), new Vector3i(x2, y2, z2));
                 pref.bCopyAirBlocks = true;
+                int skipped = withStorage ? 0 : PrefabStorage.RemoveStorageBlocks(pref);
+                if (skipped > 0)
+                {
+                    SdtdConsole.Instance.Output("Skipped " + skipped + " storage block(s). Add \"withstorage\" to duplicate them with their contents.");
+                }
 
                 SdtdConsole.Instance.Output("Area duplicated from " + x1 + " " + y1 + " " + z1 + " to " + x2 + " " + y2 + " " + z2);
 
@@ -310,7 +318,7 @@ namespace ServerCore.CustomCommands
                 Prefab undo = new Prefab(new Vector3i(pref.size.x, pref.size.y, pref.size.z));
                 undo.bCopyAirBlocks = true;
 
-                undo.copyFromWorld(GameManager.Instance.World, new Vector3i(x, y, z), new Vector3i(x + pref.size.x, y + pref.size.y, z + pref.size.z));
+                PrefabStorage.RunIncludingStorage(() => undo.copyFromWorld(GameManager.Instance.World, new Vector3i(x, y, z), new Vector3i(x + pref.size.x, y + pref.size.y, z + pref.size.z)));
                 if (_senderInfo.RemoteClientInfo != null)
                 {
                     PrefabUndo.setUndo(_senderInfo.RemoteClientInfo.entityId + "", undo, new Vector3i(x, y, z), -1);
@@ -360,6 +368,10 @@ namespace ServerCore.CustomCommands
             catch (Exception e)
             {
                 SdtdConsole.Instance.Output("Error in PrefabDuplicator.Run: " + e);
+            }
+            finally
+            {
+                PrefabStorage.IncludeStorage = false;
             }
         }
 

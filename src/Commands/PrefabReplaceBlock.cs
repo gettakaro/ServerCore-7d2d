@@ -371,7 +371,7 @@ namespace ServerCore.CustomCommands
 
                     Prefab undo = new Prefab(new Vector3i(pref.size.x, pref.size.y, pref.size.z));
                     undo.bCopyAirBlocks = true;
-                    undo.copyFromWorld(GameManager.Instance.World, new Vector3i(x1, y1, z1), new Vector3i(x2, y2, z2));
+                    PrefabStorage.RunIncludingStorage(() => undo.copyFromWorld(GameManager.Instance.World, new Vector3i(x1, y1, z1), new Vector3i(x2, y2, z2)));
                     if (_senderInfo.RemoteClientInfo != null)
                     {
                         PrefabUndo.setUndo(_senderInfo.RemoteClientInfo.entityId + "", undo, new Vector3i(x1, y1, z1), -1);
