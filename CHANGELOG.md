@@ -6,6 +6,8 @@ All notable changes to ServerCore are documented here. The format is based on [K
 
 ## [3.3.0] - 2026-10-28
 
+This release is for game version 3.4.0 b6, like 3.2.0.
+
 ### Changed
 
 - `bexport`, `brender` and `bdup` skip storage blocks such as crates, safes and the land claim block's storage, so a base can't be copied together with its loot. Add `withstorage` to keep storage blocks and their contents. Requested by PRG.
