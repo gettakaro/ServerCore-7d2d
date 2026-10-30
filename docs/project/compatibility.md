@@ -5,7 +5,7 @@ description: How ServerCore relates to PrismaCore 2.5, and which game versions a
 
 ## Coming from PrismaCore
 
-ServerCore 3.2.0 is a drop-in replacement for PrismaCore 2.5. The mod has a new name, but the parts your server and tools rely on work as before:
+ServerCore 3.3.0 is a drop-in replacement for PrismaCore 2.5. The mod has a new name, but the parts your server and tools rely on work as before:
 
 - **Console commands**: the same names and aliases, including the `pc-` prefixed forms
 - **Command output**: the same text, so server managers and community modules that parse it keep working
@@ -18,6 +18,7 @@ When a release changes any of these, it's a new major version, and the [changelo
 
 | ServerCore | PrismaCore | Game version |
 |---|---|---|
+| 3.3.0 | – | 3.4.0 b6 |
 | 3.2.0 | – | 3.4.0 b6 |
 | 3.1.0 | – | 3.3.0 b18 |
 | 3.2.0-exp.N (pre-release) | – | 3.4.0 EXP (experimental branch) |
