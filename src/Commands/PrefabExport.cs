@@ -16,13 +16,14 @@ namespace ServerCore.CustomCommands
         public override string getHelp()
         {
             return "Usage:\n" +
-                "  1. bexport <x1> <x2> <y1> <y2> <z1> <z2> <prefab_file_name> [overwrite]\n" +
+                "  1. bexport <x1> <x2> <y1> <y2> <z1> <z2> <prefab_file_name> [overwrite] [withstorage]\n" +
                 "  2. bexport \n" +
-                "  3. bexport <prefab_file_name> [overwrite]\n\n" +
+                "  3. bexport <prefab_file_name> [overwrite] [withstorage]\n\n" +
                 "1. Export the defined area to a prefabFile in folder .../UserData/LocalPrefabs/  \n" +
                 "2. Store the player position to be used togheter on method 3.  \n" +
                 "3. Use stored position on method 2. with current position to export the area to prefab File in folder .../UserData/LocalPrefabs/ \n" +
-                "   NOTE: Sleepervolumes are lost during this process. See brender for more information.";
+                "   NOTE: Sleepervolumes are lost during this process. See brender for more information.\n" +
+                "   NOTE: Storage blocks (crates, safes, ...) are not exported, unless you add \"withstorage\" to export them with their contents.";
         }
 
         public override string[] getCommands()
@@ -34,6 +35,7 @@ namespace ServerCore.CustomCommands
         {
             try
             {
+                bool withStorage = PrefabStorage.TakeWithStorageParam(_params);
                 if (_params.Count != 8 && _params.Count != 7 && _params.Count != 0 && _params.Count != 1 && _params.Count != 2)
                 {
                     SdtdConsole.Instance.Output("ERR: Wrong number of arguments, expected 0 or 1, 2, 7 or 8, found " + _params.Count + ".");
@@ -164,14 +166,27 @@ namespace ServerCore.CustomCommands
                     Prefab pref = new Prefab();
 
 
-                    string str = fileName + ".tts";
-                    PathAbstractions.AbstractedLocation location = new PathAbstractions.AbstractedLocation(PathAbstractions.EAbstractedLocationType.UserDataPath, fileName, LaunchPrefs.UserDataFolder.Value + "/LocalPrefabs/" + str, null, true);
-                    pref.location = location;
+                    pref.location = Prefab.LocationForNewPrefab(fileName);
 
-                    pref.copyFromWorld(GameManager.Instance.World, new Vector3i(x1, y1, z1), new Vector3i(x2, y2, z2));
-                    pref.bCopyAirBlocks = true;
+                    bool saved;
+                    PrefabStorage.IncludeStorage = withStorage;
+                    try
+                    {
+                        pref.copyFromWorld(GameManager.Instance.World, new Vector3i(x1, y1, z1), new Vector3i(x2, y2, z2));
+                        pref.bCopyAirBlocks = true;
+                        int skipped = withStorage ? 0 : PrefabStorage.RemoveStorageBlocks(pref);
+                        if (skipped > 0)
+                        {
+                            SdtdConsole.Instance.Output("Skipped " + skipped + " storage block(s). Add \"withstorage\" to export them with their contents.");
+                        }
+                        saved = pref.Save(pref.location, true);
+                    }
+                    finally
+                    {
+                        PrefabStorage.IncludeStorage = false;
+                    }
 
-                    if (pref.Save(pref.location, true))
+                    if (saved)
                     {
                         SdtdConsole.Instance.Output("Prefab " + fileName + " exported. Area mapped from " + x1 + " " + y1 + " " + z1 + " to " + x2 + " " + y2 + " " + z2);
                         return;
@@ -183,6 +198,7 @@ namespace ServerCore.CustomCommands
             catch (Exception e)
             {
                 Log.Out("Error in PrefabExport.Run: " + e);
+                SdtdConsole.Instance.Output("ERR: Prefab export failed: " + e.Message + " (see server log)");
             }
         }
     }

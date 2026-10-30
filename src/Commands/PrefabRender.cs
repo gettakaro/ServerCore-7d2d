@@ -15,15 +15,16 @@ namespace ServerCore.CustomCommands
         public override string getHelp()
         {
             return "Usage:\n" +
-                "  1. brender <prefab_file_name> <x> <y> <z> <rot> [nosleepers] [addtorwg]\n" +
-                "  2. brender <prefab_file_name> <rot> [nosleepers] [addtorwg]\n" +
-                "  3. brender <prefab_file_name> <rot> <depth> [nosleepers] [addtorwg]\n" +
+                "  1. brender <prefab_file_name> <x> <y> <z> <rot> [nosleepers] [addtorwg] [withstorage]\n" +
+                "  2. brender <prefab_file_name> <rot> [nosleepers] [addtorwg] [withstorage]\n" +
+                "  3. brender <prefab_file_name> <rot> <depth> [nosleepers] [addtorwg] [withstorage]\n" +
                 "<rot> prefab rotation -> needs to be equal to 0,1,2 or 3\n" +
                 "1. Render prefab on <x> <y> <z> location\n" +
                 "2. Render prefab on your position\n" +
                 "3. Render prefab on your position with y deslocated <depth blocks>\n" +
                 "   NOTE: Sleeper control is ONLY possible on prefabs that are present in prefabs.xml (world folder) that is used to create the map (RWG).\n" +
-                "   NOTE: Use parameter \"addtorwg\" to permanently add this prefab to the current RWG world. Can be reset like any other RWG prefab and will still be in world after a wipe. Will cause re-download of world for clients!";
+                "   NOTE: Use parameter \"addtorwg\" to permanently add this prefab to the current RWG world. Can be reset like any other RWG prefab and will still be in world after a wipe. Will cause re-download of world for clients! A prefab that contains storage blocks needs \"withstorage\" too.\n" +
+                "   NOTE: Storage blocks (crates, safes, ...) in the prefab are not rendered, unless you add \"withstorage\" to render them with their contents.";
 
         }
 
@@ -36,6 +37,8 @@ namespace ServerCore.CustomCommands
         {
             try
             {
+                bool withStorage = PrefabStorage.TakeWithStorageParam(_params);
+                PrefabStorage.IncludeStorage = withStorage;
                 if (_params.Count < 2 || _params.Count > 7)
                 {
                     SdtdConsole.Instance.Output("ERR: Wrong number of arguments, expected 2 to 7, found " + _params.Count + ".");
@@ -141,7 +144,7 @@ namespace ServerCore.CustomCommands
 
                     if (!Prefab.PrefabExists(_params[0]))
                     {
-                        PathAbstractions.AbstractedLocation fabLocation = new PathAbstractions.AbstractedLocation(PathAbstractions.EAbstractedLocationType.UserDataPath, _params[0], LaunchPrefs.UserDataFolder.Value + "/LocalPrefabs/", null, _params[0], ".tts", true);
+                        PathAbstractions.AbstractedLocation fabLocation = Prefab.LocationForNewPrefab(_params[0]);
                         if (!pref.Load(fabLocation))
                         {
                             SdtdConsole.Instance.Output("ERR: Unable to load prefab " + _params[0]);
@@ -158,12 +161,22 @@ namespace ServerCore.CustomCommands
                     }
 
                     pref.bCopyAirBlocks = true;
+                    int skipped = withStorage ? 0 : PrefabStorage.RemoveStorageBlocks(pref);
+                    if (skipped > 0)
+                    {
+                        SdtdConsole.Instance.Output("Skipped " + skipped + " storage block(s). Add \"withstorage\" to render them with their contents.");
+                    }
+                    if (skipped > 0 && addtorwg)
+                    {
+                        SdtdConsole.Instance.Output("ERR: Prefab " + _params[0] + " contains " + skipped + " storage block(s). addtorwg renders the prefab file again when the region resets, storage included, so storage can't be skipped. Add \"withstorage\" to render it with storage, or export it again without \"withstorage\".");
+                        return;
+                    }
                     y = y + pref.yOffset;
                     pref.RotateY(false, rot);
 
                     Prefab undo = new Prefab(new Vector3i(pref.size.x, pref.size.y, pref.size.z));
                     undo.bCopyAirBlocks = true;
-                    undo.copyFromWorld(GameManager.Instance.World, new Vector3i(x, y, z), new Vector3i(x + pref.size.x, y + pref.size.y, z + pref.size.z));
+                    PrefabStorage.RunIncludingStorage(() => undo.copyFromWorld(GameManager.Instance.World, new Vector3i(x, y, z), new Vector3i(x + pref.size.x, y + pref.size.y, z + pref.size.z)));
 
                     pref.CopyIntoLocal(GameManager.Instance.World.ChunkCache, new Vector3i(x, y, z), true, true, FastTags<TagGroup.Global>.none);
 
@@ -263,6 +276,10 @@ namespace ServerCore.CustomCommands
             catch (Exception e)
             {
                 SdtdConsole.Instance.Output("Error in PrefabRender.Run: " + e);
+            }
+            finally
+            {
+                PrefabStorage.IncludeStorage = false;
             }
         }
     }

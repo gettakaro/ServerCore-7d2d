@@ -7,7 +7,7 @@ ServerCore is the continuation of PrismaCore 2.5. It's built to replace it with 
 
 ## Before you start
 
-- **Game version.** ServerCore 3.1.0 targets game 3.3.0 b18. PrismaCore 2.5 was built for game 3.2.0 b10, so update the game and swap the mod at the same time.
+- **Game version.** ServerCore 3.3.0 targets game 3.4.0 b6. PrismaCore 2.5 was built for game 3.2.0 b10, so update the game and swap the mod at the same time.
 - **Other mods.** Anything that worked with PrismaCore 2.5 should work with ServerCore. The one exception is PrismaCore itself: never run both.
 
 ## Steps

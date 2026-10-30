@@ -81,7 +81,7 @@ namespace ServerCore.CustomCommands
                     }
                 }
 
-                undoObj.Prefab.CopyIntoLocal(GameManager.Instance.World.ChunkCache, new Vector3i(undoObj.Position.x, undoObj.Position.y, undoObj.Position.z), true, true, FastTags<TagGroup.Global>.none);
+                PrefabStorage.RunIncludingStorage(() => undoObj.Prefab.CopyIntoLocal(GameManager.Instance.World.ChunkCache, new Vector3i(undoObj.Position.x, undoObj.Position.y, undoObj.Position.z), true, true, FastTags<TagGroup.Global>.none));
 
                 Thread.Sleep(50);
                 ForceChunkReload.exec(dic);
