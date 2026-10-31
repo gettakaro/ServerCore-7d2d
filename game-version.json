@@ -1,9 +1,9 @@
 {
-  "version": "3.4.0 b6",
+  "version": "3.4.0 (build 26237934)",
   "app": 294420,
   "depot": 294422,
   "branch": "public",
-  "buildid": 26167630,
-  "manifest": "691152299146393406",
-  "assemblyCSharpSha256": "ad146019f4f488ba6c395df0a33bcdf0fdabcec91a0b15fd65475e3047f8a5db"
+  "buildid": 26237934,
+  "manifest": "2522651145831190371",
+  "assemblyCSharpSha256": "36d6f6e85b9a53bb0f84951106beed9201bee26e10fff6cb37da4707e32cfb43"
 }
