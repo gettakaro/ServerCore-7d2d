@@ -285,6 +285,32 @@ namespace ServerCore
                     }
                 }
 
+                // A dedicated server spawns every player-placed vehicle in NetPackageVehicleSpawn.ProcessPackage,
+                // which sets the owner before the vehicle is broadcast and saved. Locking inside that window means
+                // clients and the save both get the locked state, and vehicles loaded from the save are never touched.
+                gameMethod = AccessTools.Method(typeof(NetPackageVehicleSpawn), "ProcessPackage");
+                var spawnMethod = AccessTools.Method(typeof(World), "SpawnEntityInWorld", new[] { typeof(Entity) });
+                if (gameMethod == null || spawnMethod == null)
+                {
+                    Log.Out("[PrismaCore] GameMethod NetPackageVehicleSpawn.ProcessPackage or World.SpawnEntityInWorld not found. Abort patching.");
+                }
+                else
+                {
+                    var start = typeof(StateManager).GetMethod("VehiclePlacementStart");
+                    var end = typeof(StateManager).GetMethod("VehiclePlacementEnd");
+                    var lockVehicle = typeof(StateManager).GetMethod("LockPlacedVehicle");
+
+                    if (start == null || end == null || lockVehicle == null)
+                    {
+                        Log.Out("[PrismaCore] PatchMethod VehiclePlacementStart, VehiclePlacementEnd or LockPlacedVehicle not found. Abort patching.");
+                    }
+                    else
+                    {
+                        harmonyPatcher.Patch(spawnMethod, prefix: new HarmonyMethod(lockVehicle));
+                        harmonyPatcher.Patch(gameMethod, prefix: new HarmonyMethod(start), finalizer: new HarmonyMethod(end));
+                    }
+                }
+
                 gameMethod = AccessTools.Method(typeof(DroneManager), "Save");
                 if (gameMethod == null)
                 {
@@ -1050,6 +1076,38 @@ namespace ServerCore
             catch { }
 
             return true;
+        }
+
+        [ThreadStatic]
+        private static bool placingVehicle;
+
+        public static void VehiclePlacementStart()
+        {
+            placingVehicle = true;
+        }
+
+        public static void VehiclePlacementEnd()
+        {
+            placingVehicle = false;
+        }
+
+        // Runs before the spawn is broadcast and saved, so clients and the save both get the locked state.
+        public static void LockPlacedVehicle(Entity _entity)
+        {
+            if (!placingVehicle || !ServerCoreSettings.Instance.Vehicles_LockOnPlace || !(_entity is EntityVehicle vehicle))
+            {
+                return;
+            }
+
+            // The game only gives the vehicle an owner when a player placed it; an ownerless locked vehicle would lock everyone out.
+            PlatformUserIdentifierAbs owner = vehicle.GetOwner();
+            if (owner == null)
+            {
+                return;
+            }
+
+            vehicle.SetLocked(true);
+            Log.Out(string.Format("[PrismaCore] Vehicle {0} locked on placement for {1}", vehicle.entityId, owner.CombinedString));
         }
 
         public static bool LCB(TEFeatureLandClaim __instance, Vector3i _blockPos, BlockValue _blockValue)
