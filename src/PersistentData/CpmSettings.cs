@@ -148,6 +148,7 @@ namespace ServerCore
 
         //Vehicle removal on boot
         public bool Vehicles_RemoveOnRestart = false;
+        public bool Vehicles_LockOnPlace = false;
 
         //VIPModGuard
         public bool VIPModGuard_Enabled = false;

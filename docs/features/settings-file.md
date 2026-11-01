@@ -277,6 +277,10 @@ The minimum amount of minutes the server has to be up before shutdownba will reb
 
 If true, all vehicles that are NOT stored (backpack, container etc) will be removed at every server restart.
 
+`<Vehicles_LockOnPlace>false</Vehicles_LockOnPlace>`
+
+If true, a vehicle a player places starts locked to that player, so other players can't drive it or open its storage. The owner can unlock it as usual, or set a password to let friends in. Allies and party members are locked out until then. Vehicles that are already in the world aren't changed, but a vehicle that's picked up and placed again comes back locked. If false, vehicles are placed unlocked, like in the base game.
+
 `<VIPModGuard_Enabled>false</VIPModGuard_Enabled>`
 
 If true, ServerCore flags players who have an item mod listed in `VIPModGuardItems.txt` installed in their gear. See [VIP ModGuard](/ServerCore-7d2d/features/vip-modguard/).

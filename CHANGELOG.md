@@ -4,6 +4,10 @@ All notable changes to ServerCore are documented here. The format is based on [K
 
 ## [Unreleased]
 
+### Added
+
+- `Vehicles_LockOnPlace` in `PrismaCoreSettings.xml`: when true, a vehicle a player places starts locked to that player. It's false by default, so vehicles are placed unlocked like in the base game. Requested by RippedWarrior.
+
 ## [3.3.0] - 2026-10-28
 
 This release is for game version 3.4.0 b6, like 3.2.0.
